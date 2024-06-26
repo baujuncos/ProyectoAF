@@ -2,9 +2,6 @@ from functions.reader import Reader
 from functions.parsing import Parser
 from functions.nfa import NFA
 
-from functions.direct_reader import DirectReader
-from time import process_time
-
 
 #Mensajes que se mostraran al usuario
 program_title = '''   
@@ -43,13 +40,6 @@ if __name__ == "__main__":  # asegurarse de que este script solo se ejecute si n
                 tokens = reader.CreateTokens()
                 parser = Parser(tokens)
                 tree = parser.Parse()
-                '''
-                direct_reader = DirectReader(regex)
-                direct_tokens = direct_reader.CreateTokens()
-                direct_parser = Parser(direct_tokens)
-                direct_tree = direct_parser.Parse()
-                print('\n\tExpresion aceptada:', tree)
-                '''
                 print(thompson_msg)
 
                 nfa = NFA(tree, reader.GetSymbols(), regex)
