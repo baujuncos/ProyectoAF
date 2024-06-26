@@ -230,6 +230,6 @@ class NFA:
 
 # Función que escribe contenido en un archivo.
 def WriteToFile(filename: str, content: str):
-    with open(filename, 'w') as _file:
+    with open(filename, 'w',encoding='utf-8') as _file:
         _file.write(content)
     return f'Archivo "{filename}" creado'
