@@ -1,4 +1,4 @@
-// Diagrama NFA
+// Diagrama AFN
 strict digraph {
 	rankdir=LR
 	node [shape=circle]

@@ -32,22 +32,6 @@ class Kleene():
         return f'{self.a}*'
 
 
-class Plus():
-    def __init__(self, a):
-        self.a = a
-
-    def __repr__(self):
-        return f'{self.a}+'
-
-
-class Question():
-    def __init__(self, a):
-        self.a = a
-
-    def __repr__(self):
-        return f'{self.a}?'
-
-
 class Expression():
     def __init__(self, a, b=None):
         self.a = a

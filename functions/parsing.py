@@ -1,5 +1,5 @@
-from tokens import TokenType
-from nodes import *
+from functions.tokens import TokenType
+from functions.nodes import *
 
 
 class Parser:
@@ -35,19 +35,11 @@ class Parser:
 
         while self.curr_token != None and \
                 (
-                    self.curr_token.type == TokenType.KLEENE or
-                    self.curr_token.type == TokenType.PLUS or
-                    self.curr_token.type == TokenType.QUESTION
+                    self.curr_token.type == TokenType.KLEENE
                 ):
             if self.curr_token.type == TokenType.KLEENE:
                 self.Next()
                 res = Kleene(res)
-            elif self.curr_token.type == TokenType.QUESTION:
-                self.Next()
-                res = Question(res)
-            else:
-                self.Next()
-                res = Plus(res)
 
         return res
 

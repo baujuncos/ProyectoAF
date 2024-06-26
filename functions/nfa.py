@@ -1,10 +1,13 @@
 from graphviz import Digraph
 from pprint import pprint
-from nodes import Or
-from tokens import TokenType
-from utils import WriteToFile
+from functions.nodes import Or
+from functions.tokens import TokenType
 
+def WriteToFile(filename: str, content: str):
+    with open(filename, 'w') as _file:
+        _file.write(content)
 
+    return f'Archivo "{filename}" creado'
 class NFA:
     def __init__(self, tree, symbols, regex):
         # Propiedades de un autómata finito
@@ -19,7 +22,7 @@ class NFA:
         self.regexAccepted = None
 
         # Propiedades para crear el diagrama
-        self.dot = Digraph(comment='Diagrama NFA', strict=True)
+        self.dot = Digraph(comment='Diagrama AFN', strict=True)
         self.dot.attr(rankdir='LR')
         self.dot.attr('node', shape='circle')
 
@@ -56,7 +59,7 @@ class NFA:
         initial_node = self.curr_state - 1
         mid_node = None
 
-        # from initial to first epsilon
+        # desde el inicial al primer epsilon
         self.dot.edge(
             str(initial_node),
             str(self.curr_state),
@@ -64,7 +67,7 @@ class NFA:
         )
         self.curr_state += 1
 
-        # from epsilon to first
+        # de epsilon al primero
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
@@ -74,7 +77,7 @@ class NFA:
         mid_node = self.curr_state
         self.curr_state += 1
 
-        # from initial to second epsilone
+        # desde el inicial al segundo epsilon
         self.dot.edge(
             str(initial_node),
             str(self.curr_state),
@@ -83,7 +86,7 @@ class NFA:
 
         self.curr_state += 1
 
-        # from epsilon to second
+        # desde epsilon al segundo
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
@@ -92,14 +95,14 @@ class NFA:
 
         self.curr_state += 1
 
-        # from first to last epsilon
+        # desde el primero al ultimo epsilon
         self.dot.edge(
             str(mid_node),
             str(self.curr_state),
             'e'
         )
 
-        # from second to last epsilon
+        # desde el segundo al ultimo epsilon
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
@@ -108,7 +111,7 @@ class NFA:
 
     def KleeneNode(self, node):
 
-        # First epsilon
+        # Primer epsilon
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
@@ -118,14 +121,14 @@ class NFA:
         first_node = self.curr_state - 1
         self.curr_state += 1
 
-        # Render node
+        # Nodo de renderizado
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
             self.Render(node.a)
         )
 
-        # node a last state to first epsilon
+        # nodo en el último estado al primer epsilon
         self.dot.edge(
             str(self.curr_state),
             str(first_node + 1),
@@ -134,14 +137,14 @@ class NFA:
 
         self.curr_state += 1
 
-        # Second epsilon
+        # Segundo epsilon
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
             'e'
         )
 
-        # First epsilon to last state
+        # Del primer epsilon al ultimo estado
         self.dot.edge(
             str(first_node),
             str(self.curr_state),
@@ -162,7 +165,7 @@ class NFA:
         initial_node = self.curr_state - 1
         mid_node = None
 
-        # from initial to first epsilon
+        # desde el primero al primer epsilon
         self.dot.edge(
             str(initial_node),
             str(self.curr_state),
@@ -170,7 +173,7 @@ class NFA:
         )
         self.curr_state += 1
 
-        # from epsilon to first
+        # desde epsilon al primero
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
@@ -180,7 +183,7 @@ class NFA:
         mid_node = self.curr_state
         self.curr_state += 1
 
-        # from initial to second epsilone
+        # desde el primero al segundo epsilon
         self.dot.edge(
             str(initial_node),
             str(self.curr_state),
@@ -189,7 +192,7 @@ class NFA:
 
         self.curr_state += 1
 
-        # from epsilon to second
+        # desde epsilon al segundo
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
@@ -198,14 +201,14 @@ class NFA:
 
         self.curr_state += 1
 
-        # from first to last epsilon
+        # desde el primero al ultimo epsilon
         self.dot.edge(
             str(mid_node),
             str(self.curr_state),
             'e'
         )
 
-        # from second to last epsilon
+        # desde el segundo al ultimo epsilon
         self.dot.edge(
             str(self.curr_state - 1),
             str(self.curr_state),
