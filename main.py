@@ -40,8 +40,7 @@ class AFNGeneratorApp:
             tree = reader.Reader()
 
             nfa = NFA(tree, regex, regex)
-            nfa_regex = nfa.EvalRegex()
-
+            #nfa_regex = nfa.EvalRegex()
             nfa.WriteNFADiagram()
 
             messagebox.showinfo("AFN Creado", "Se ha creado el AFN correctamente.")
@@ -53,7 +52,7 @@ class AFNGeneratorApp:
 
 # Definir las constantes y mensajes del programa
 program_title = '''
-#        AUTOMATAS FINITOS        #
+        AUTOMATAS FINITOS        
 
 Genera AFNs basados en una expresión regular.
 '''

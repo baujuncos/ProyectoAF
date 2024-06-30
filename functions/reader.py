@@ -1,6 +1,6 @@
 from functions.nodes import *
 
-class Reader:
+class Reader:# crea un árbol síntactico de forma PREFIJA
     def __init__(self, regex):
         self.regex = regex
         self.curr_index = 0
@@ -15,6 +15,7 @@ class Reader:
 
     def NewSymbol(self):
         char = self.CurrentChar()
+        
         if char == '(':
             self.Next()
             res = self.Expression()
