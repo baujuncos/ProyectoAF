@@ -42,8 +42,6 @@ class AFNGeneratorApp:
             nfa = NFA(tree, regex)
             nfa.WriteNFADiagram()
 
-            messagebox.showinfo("AFN Creado", "Se ha creado el AFN correctamente.")
-
         except AttributeError as e:
             messagebox.showerror("Error", f"Expresión no válida: {e}")
         except Exception as e:
