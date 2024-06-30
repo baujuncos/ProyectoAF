@@ -39,8 +39,7 @@ class AFNGeneratorApp:
             reader = Reader(regex)
             tree = reader.Reader()
 
-            nfa = NFA(tree, regex, regex)
-            #nfa_regex = nfa.EvalRegex()
+            nfa = NFA(tree, regex)
             nfa.WriteNFADiagram()
 
             messagebox.showinfo("AFN Creado", "Se ha creado el AFN correctamente.")

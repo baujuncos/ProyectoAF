@@ -2,10 +2,9 @@ from graphviz import Digraph
 from functions.nodes import Or, Letter, Append, Kleene
 
 class NFA:
-    def __init__(self, tree, symbols, regex):
+    def __init__(self, tree, regex):
         # Propiedades del autómata finito no determinista (NFA)
         self.accepting_states = []
-        self.symbols = symbols
         self.trans_func = None
         self.curr_state = 1
 
