@@ -13,6 +13,6 @@ Librerías utilizadas:
 - kinter: Para la interfaz gráfica de usuario.
 
 Creado por:
-- Bautista Jundos
+- Bautista Juncos
 - Belén Treachi
 - Leonardo Morabito
