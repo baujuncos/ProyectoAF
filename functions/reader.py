@@ -1,6 +1,6 @@
 from functions.nodes import *
 
-class Parser:
+class Reader:
     def __init__(self, regex):
         self.regex = regex
         self.curr_index = 0
@@ -44,7 +44,7 @@ class Parser:
                 res = Append(res, self.NewOperator())
         return res
 
-    def Parse(self):
+    def Reader(self):
         if not self.regex:
             return None
         return self.Expression()

@@ -1,54 +1,65 @@
-from functions.parsing import Parser
+import tkinter as tk
+from tkinter import messagebox
+from functions.reader import Reader
 from functions.nfa import NFA
 
+class AFNGeneratorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Generador de AFNs")  # Título de la ventana
+        self.regex_entry = None
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Crear los widgets de la interfaz
+        program_title_label = tk.Label(self.root, text=program_title, font=("Arial", 14))
+        program_title_label.pack(pady=10)
+
+        regex_label = tk.Label(self.root, text="Expresión regular:")
+        regex_label.pack(pady=5)
+
+        self.regex_entry = tk.Entry(self.root, width=50)
+        self.regex_entry.pack(pady=5)
+
+        create_afn_button = tk.Button(self.root, text="Crear AFN", command=self.create_afn)
+        create_afn_button.pack(pady=10)
+
+        exit_button = tk.Button(self.root, text="Salir", command=self.root.quit)
+        exit_button.pack(pady=10)
+
+    def create_afn(self):
+        # Método para crear el AFN y mostrar el resultado
+        regex = self.regex_entry.get()
+
+        if not regex:
+            messagebox.showerror("Error", "Por favor ingrese una expresión regular.")
+            return
+
+        try:
+            reader = Reader(regex)
+            tree = reader.Reader()
+
+            nfa = NFA(tree, regex, regex)
+            nfa_regex = nfa.EvalRegex()
+
+            nfa.WriteNFADiagram()
+
+            messagebox.showinfo("AFN Creado", "Se ha creado el AFN correctamente.")
+
+        except AttributeError as e:
+            messagebox.showerror("Error", f"Expresión no válida: {e}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error: {e}")
+
+# Definir las constantes y mensajes del programa
 program_title = '''
 #        AUTOMATAS FINITOS        #
 
-Genera AFNs basados en una expresión regular. NOTA: para epsilon usar la letra 'e'
+Genera AFNs basados en una expresión regular.
 '''
 
-main_menu = '''
-Seleccione una opción:
-1. Definir una expresión regular
-0. Salir
-'''
-
-thompson_msg = '''
-    # AFN CREADO #
-'''
-
-type_regex_msg = '''
-Ingrese la expresión regular:
-'''
-
+# Iniciar la aplicación
 if __name__ == "__main__":
-    print(program_title)
-    opt = None
-    regex = None
-
-    while opt != 0:
-        print(main_menu)
-        opt = input('> ')
-
-        if opt == '1':
-            print(type_regex_msg)
-            regex = input('> ')
-
-            try:
-                parser = Parser(regex)
-                tree = parser.Parse()
-                print(thompson_msg)
-
-                nfa = NFA(tree, regex, regex)
-                nfa_regex = nfa.EvalRegex()
-
-                nfa.WriteNFADiagram()
-
-            except AttributeError as e:
-                print(f'\n\tERR: Expresión no válida (faltan paréntesis)')
-            except Exception as e:
-                print(f'\n\tERR: {e}')
-
-        elif opt == '0':
-            print('Chau!')
-            exit(1)
+    root = tk.Tk()
+    app = AFNGeneratorApp(root)
+    root.mainloop()
