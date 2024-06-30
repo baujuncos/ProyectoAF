@@ -1,5 +1,5 @@
 from graphviz import Digraph
-from functions.nodes import Or
+from functions.nodes import Or, Letter, Append, Kleene
 
 class NFA:
     def __init__(self, tree, symbols, regex):
@@ -134,14 +134,14 @@ class NFA:
             str(self.curr_state),
             'ε'
         )
+
     def GenerateTransitionTable(self):
-        # Genera la tabla de transiciones!
+        # Genera la tabla de transiciones
+        states = [i.replace('\t', '') for i in self.dot.source.split('\n') if '->' in i and '=' in i]  # obtiene las transiciones del diagrama
+        self.trans_func = dict.fromkeys([str(s) for s in range(self.curr_state + 1)])  # crea un diccionario con los números de los estados
+        self.trans_func[str(self.curr_state)] = dict()  # inicia la tabla de transiciones para un estado actual
 
-        states = [i.replace('\t', '') for i in self.dot.source.split('\n') if '->' in i and '=' in i] #obtiene las transiciones del diagrama
-        self.trans_func = dict.fromkeys([str(s) for s in range(self.curr_state + 1)])#crea un diccionario con los numeros de los estados
-        self.trans_func[str(self.curr_state)] = dict()#inicia la tabla de transiciones para un estado actual
-
-        for state in states: #procesa todas las transiciones y actualiza la tabla
+        for state in states:  # procesa todas las transiciones y actualiza la tabla
             splitted = state.split(' ')
             init = splitted[0]
             final = splitted[2]
@@ -169,7 +169,7 @@ class NFA:
 
     def EvalNext(self, eval_symbol, curr_state, eval_regex):
         # Evalúa el siguiente símbolo de la expresión regular
-        if self.regexAccepted != None:
+        if self.regexAccepted is not None:
             return
 
         transitions = self.trans_func[curr_state]
@@ -179,8 +179,8 @@ class NFA:
                     self.regexAccepted = True
                     return
 
-                for state in transitions['e']:
-                    if self.regexAccepted != None:
+                for state in transitions['ε']:
+                    if self.regexAccepted is not None:
                         break
                     self.EvalNext(eval_symbol, state, eval_regex)
 
@@ -198,11 +198,11 @@ class NFA:
 
                     elif str(self.accepting_states) != curr_state:
                         for state in transitions[trans_symbol]:
-                            self.EvalNext('e', state, None)
-                        if self.regexAccepted != None:
+                            self.EvalNext('ε', state, None)
+                        if self.regexAccepted is not None:
                             return
 
-                if self.regexAccepted != None:
+                if self.regexAccepted is not None:
                     return
 
                 for state in transitions[trans_symbol]:
@@ -220,16 +220,14 @@ class NFA:
 
     def WriteNFADiagram(self):
         # Escribe el diagrama del NFA en un archivo y lo renderiza
-        source = self.dot.source #obtiene la fuente del diagrama
-        
-        #escribe en el archivo
+        source = self.dot.source  # obtiene la fuente del diagrama
+        # escribe en el archivo
         WriteToFile('./output/NFA.gv', source)
         self.dot.render('./output/NFA.gv', view=True)
 
 
-
 # Función que escribe contenido en un archivo.
 def WriteToFile(filename: str, content: str):
-    with open(filename, 'w',encoding='utf-8') as _file:
+    with open(filename, 'w', encoding='utf-8') as _file:
         _file.write(content)
     return f'Archivo "{filename}" creado'
