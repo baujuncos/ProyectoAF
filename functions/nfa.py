@@ -24,7 +24,17 @@ class NFA:
         self.accepting_states = self.GetAcceptingState()
 
     def Render(self, node):
-        # Renderiza el nodo actual llamando al método correspondiente
+        # Renderiza el nodo actual llamando al método correspondientez
+
+        if len(self.regex) ==1:
+            label = 'ε' if self.regex == '' else self.regex
+            self.dot.edge(
+                str(self.curr_state),
+                str(self.curr_state + 1),
+                label
+            )
+            self.curr_state += 1
+        
         self.prev_state = self.curr_state
         method_name = node.__class__.__name__ + 'Node'
         method = getattr(self, method_name)
